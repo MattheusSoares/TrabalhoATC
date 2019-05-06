@@ -3,7 +3,21 @@ package trabalhoatc;
 /**
  *
  * @author mattheus
+ 
+ * Classe Singleton - TagReader
  */
-public class TagReader {
+class TagReader {
+    private static TagReader instance = new TagReader();
     
+    private TagReader(){}
+    
+    public static TagReader getInstance(){
+        return instance;
+    }
+    
+    
+    
+    
+    
+
 }
