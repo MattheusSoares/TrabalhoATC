@@ -1,6 +1,8 @@
 package trabalhoatc;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import trabalhoatc.TagReader;
 import trabalhoatc.FileManager;
@@ -12,67 +14,88 @@ public class TrabalhoATC {
         System.out.println("Aspectos Teóricos da Computação");
         System.out.println("Entre com os comandos desejados:");
 
-        Scanner sc = new Scanner(System.in);
         Integer op = 0;
         while (op != 1) {
 
-            String tag = sc.next();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-            System.out.println(tag.indexOf(":"));
+            String tag = reader.readLine();
 
-            char[] aux = new char[2];
-            for (int i = 0; i < 2; i++) {
-                aux[i] = tag.charAt(i);
-            }
+            Integer marcador = tag.indexOf(":");
+            char[] aux;
 
-            String subtag = new String(aux);
+            if (marcador != -1) {
 
-            switch (subtag) {
-
-                case ":f":
-                    System.out.println("[INFO] Dividindo tags do arquivo...");
-                    /*    divisão de tags do arquivo informado    */
-                    break;
-                case ":l":
-                    System.out.println("[INFO] Carregando um arquivo com definições de tags...");
-                    manager.FileReading("Test.txt");
-
-                    break;
-                case ":o":
-                    System.out.println("[INFO] Especificando o caminho do arquivo de saída para a divisão de tags...");
-                    /*    especifica o caminho do arquivo de saída para a divisão de tags*/
-                    break;
-                case ":p":
-                    System.out.println("[INFO] Realizando a divisão em tags da entrada informada...");
-                    /*    realiza a divisão em tags da entrada informada*/
-                    break;
-                case ":q":
-                    op = 1;
-                    System.out.println("[INFO] Saindo...");
-                    System.exit(0);
-                    break;
-                case ":s":
-                    System.out.println("[INFO] Salvando as tags...");
-                    manager.FileWriting("Test.txt", "tags n' stuff:");
-                    break;
-                default:
-                    if (tag.equals(tag.toUpperCase()) && ":".equals(tag.substring(tag.length() - 1))) {
-                        /*
-                        
-                        Fazer tratamento das tags, verificar a digitação
-                        Tratamento da expressão regular 
-                        Tratamento dos valores das tags
-                        
-                        
-                        */
-                    } else {
-                        System.out.println("[ERROR] Padrão de tag não aceito");
+                if (marcador == 0) {
+                    aux = new char[2];
+                    for (int i = 0; i < 2; i++) {
+                        aux[i] = tag.charAt(i);
                     }
-                    break;
+                } else {
+                    aux = new char[marcador];
+                    for (int i = 0; i < marcador; i++) {
+                        aux[i] = tag.charAt(i);
+                    }
+                }
+
+                String subtag = new String(aux);
+
+                switch (subtag) {
+
+                    case ":f":
+                        System.out.println("[INFO] Dividindo tags do arquivo...");
+                        /*    divisão de tags do arquivo informado    */
+                        break;
+                    case ":l":
+                        System.out.println("[INFO] Carregando um arquivo com definições de tags...");
+                        manager.FileReading("Test.txt");
+
+                        break;
+                    case ":o":
+                        System.out.println("[INFO] Especificando o caminho do arquivo de saída para a divisão de tags...");
+                        /*    especifica o caminho do arquivo de saída para a divisão de tags*/
+                        break;
+                    case ":p":
+                        System.out.println("[INFO] Realizando a divisão em tags da entrada informada...");
+                        /*    realiza a divisão em tags da entrada informada*/
+                        break;
+                    case ":q":
+                        op = 1;
+                        System.out.println("[INFO] Saindo...");
+                        System.exit(0);
+                        break;
+                    case ":s":
+                        System.out.println("[INFO] Salvando as tags...");
+                        manager.FileWriting("Test.txt", "tags n' stuff:");//provisório
+                        break;
+                    default:
+
+                        if ((marcador > 0) && (subtag.equals(subtag.toUpperCase())) && " ".equals(tag.substring(subtag.length() + 1, subtag.length() + 2))) {
+
+
+                            String value;
+                            value = tag.substring(subtag.length() + 2, tag.length());
+
+                            if(value.length()>1) TagReader.getInstance().verifyValue();
+                            else TagReader.getInstance().setNewTag(subtag, value);
+                            /*
+                            Fazer tratamento das tags, verificar a digitação
+                            Tratamento da expressão regular
+                            Tratamento dos valores das tags
+                             */
+
+                        } else {
+                            System.out.println("[ERROR] Padrão de tag não aceito");
+                        }
+                        break;
+                }
+                System.out.println("Entre com os comandos desejados:");
+            } else {
+                System.out.println("[ERROR] Padrão de tag não aceito");
+                System.out.println("Entre com os comandos desejados:");
             }
-            System.out.println("Entre com os comandos desejados:");
+
         }
 
     }
-
 }

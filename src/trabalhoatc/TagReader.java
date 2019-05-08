@@ -74,7 +74,7 @@ class TagReader {
     }
     
     public Integer verifyValue(){
-        
+        //Resolver pilha da expressão linear
         
         
         return 0;
